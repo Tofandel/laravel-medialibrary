@@ -18,7 +18,7 @@ Media::whereNull('generated_conversions')->orWhere('generated_conversions', '')-
 - Here is the content that should be in the migration file
 ```php
 <?php
-
+use \Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -33,8 +33,9 @@ class AddGeneratedConversionsToMediaTable extends Migration
     public function up()
     {
         Schema::table('media', function (Blueprint $table) {
-            $table->json('generated_conversions')->default('[]');
+            $table->json('generated_conversions');
         });
+        Media::query()->whereNull('generated_conversions')->orWhere('generated_conversions', '')->update(['generated_conversions' => []]);
     }
 
     /**
